@@ -199,7 +199,7 @@ protected:
 class IRsendNEC: public virtual IRsendBase
 {
 public:
-  void send(unsigned long data);
+  void send(unsigned long data, int khz);
 };
 
 class IRsendSony: public virtual IRsendBase
@@ -241,7 +241,7 @@ public:
 class IRsendNECx: public virtual IRsendBase
 {
 public:
-  void send(unsigned long data);
+  void send(unsigned long data, int khz);
 };
 
 class IRsend: 
@@ -256,7 +256,7 @@ public virtual IRsendNECx
 // , public virtual IRsendADDITIONAL //add additional protocols here
 {
 public:
-  void send(IRTYPES Type, unsigned long data, unsigned int data2);
+  void send(IRTYPES Type, unsigned long data, unsigned int data2, int khz);
 };
 
 // Changed this to a base class so it can be extended

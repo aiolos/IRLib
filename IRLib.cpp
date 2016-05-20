@@ -96,14 +96,14 @@ void IRsendBase::sendGeneric(unsigned long data, unsigned char Num_Bits, unsigne
 	else space(Space_One);
 };
 
-void IRsendNEC::send(unsigned long data)
+void IRsendNEC::send(unsigned long data, int khz)
 {
   if (data==REPEAT) {
-    enableIROut(38);
+    enableIROut(khz);
     mark (564* 16); space(564*4); mark(564);space(56*173);
   }
   else {
-    sendGeneric(data,32, 564*16, 564*8, 564, 564, 564*3, 564, 38, true);
+    sendGeneric(data,32, 564*16, 564*8, 564, 564, 564*3, 564, khz, true);
   }
 };
 
@@ -121,9 +121,9 @@ void IRsendSony::send(unsigned long data, int nbits) {
 /*
  * This next section of send routines were added by Chris Young. They all use the generic send.
  */
-void IRsendNECx::send(unsigned long data)
+void IRsendNECx::send(unsigned long data, int khz)
 {
-  sendGeneric(data,32, 564*8, 564*8, 564, 564, 564*3, 564, 38, true, 108000);
+  sendGeneric(data,32, 564*8, 564*8, 564, 564, 564*3, 564, khz, true, 108000);
 };
 
 void IRsendPanasonic_Old::send(unsigned long data)
@@ -231,14 +231,14 @@ void IRsendRC6::send(unsigned long data, unsigned char nbits)
  * There is no hash code send possible. You can call sendRaw directly if necessary.
  * Typically "data2" is the number of bits.
  */
-void IRsend::send(IRTYPES Type, unsigned long data, unsigned int data2) {
+void IRsend::send(IRTYPES Type, unsigned long data, unsigned int data2, int khz) {
   switch(Type) {
-    case NEC:           IRsendNEC::send(data); break;
+    case NEC:           IRsendNEC::send(data, khz); break;
     case SONY:          IRsendSony::send(data,data2); break;
     case RC5:           IRsendRC5::send(data); break;
     case RC6:           IRsendRC6::send(data,data2); break;
     case PANASONIC_OLD: IRsendPanasonic_Old::send(data); break;
-    case NECX:          IRsendNECx::send(data); break;    
+    case NECX:          IRsendNECx::send(data, khz); break;    
     case JVC:           IRsendJVC::send(data,(bool)data2); break;
   //case ADDITIONAL:    IRsendADDITIONAL::send(data); break;//add additional protocols here
 	//You should comment out protocols you will likely never use and/or add extra protocols here
